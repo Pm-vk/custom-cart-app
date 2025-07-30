@@ -2,8 +2,8 @@
 import axios from "axios";
 
 export const axiosClient = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  baseURL: 'https://strapi-backend-av9r.onrender.com',
   headers: {
-    Authorization: `Bearer ${process.env.STRAPI_API_TOKEN}`,
+    Authorization: `Bearer ${process.env.NEXT_PUBLIC_STRAPI_API_TOKEN}`,
   },
 });
