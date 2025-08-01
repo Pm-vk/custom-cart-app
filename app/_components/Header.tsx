@@ -67,13 +67,17 @@ function Header() {
   };
 
   const SaveNewUser = async (user: User) => {
-    await axios.post("/api/users", {
-      name: user.name,
-      email: user.email,
-      picture: user.picture,
-    });
+    try {
+      await axios.post("https://strapi-backend-av9r.onrender.com/api/users", {
+        name: user.name,
+        email: user.email,
+        picture: user.picture,
+      });
+    } catch (error) {
+      console.error("Error saving user to Strapi:", error);
+    }
   };
-
+  
   useEffect(() => {
     user && GetCartList();
   }, [user]);
