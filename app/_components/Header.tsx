@@ -2,7 +2,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { ShoppingCart } from "lucide-react";
+import { ShoppingCart, Menu } from "lucide-react";
 import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { UserDetailContext } from "@/context/UserDetailContext";
@@ -10,9 +10,6 @@ import { CartContext } from "@/context/CartContext";
 import Link from "next/link";
 
 const menu = [
-  { id: 1, name: "Home", path: "/" },
-  { id: 2, name: "Products", path: "/products" },
-  { id: 3, name: "AboutUs", path: "/about" },
   { id: 4, name: "ContactUs", path: "/contact" },
 ];
 
@@ -24,8 +21,9 @@ export type User = {
 
 function Header() {
   const [user, setUser] = useState<User | null>(null);
-  const { userDetail, setUserDetail } = useContext(UserDetailContext);
+  const { setUserDetail } = useContext(UserDetailContext);
   const { cart, setCart } = useContext(CartContext);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -41,14 +39,12 @@ function Header() {
   const googleLogin = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
       localStorage.setItem("tokenResponse", JSON.stringify(tokenResponse));
-
       const userInfo = await axios.get(
         "https://www.googleapis.com/oauth2/v3/userinfo",
         {
           headers: { Authorization: `Bearer ${tokenResponse.access_token}` },
         }
       );
-
       setUser(userInfo.data);
     },
     onError: (errorResponse) => console.log(errorResponse),
@@ -71,18 +67,15 @@ function Header() {
   };
 
   const SaveNewUser = async (user: User) => {
-    const result = await axios.post("/api/users", {
+    await axios.post("/api/users", {
       name: user.name,
       email: user.email,
       picture: user.picture,
     });
-    console.log(result.data);
   };
 
   useEffect(() => {
-    if (user) {
-      GetCartList();
-    }
+    user && GetCartList();
   }, [user]);
 
   const GetCartList = async () => {
@@ -91,34 +84,75 @@ function Header() {
   };
 
   return (
-    <div className="flex items-center justify-between p-4">
-      <Image src="/logo.svg" alt="Logo" width={180} height={100} priority />
-      <ul className="flex gap-5">
-        {menu.map((item) => (
-          <li
-            key={item.id}
-            className="text-lg cursor-pointer hover:text-blue-500 transition"
-          >
-            {item.name}
-          </li>
-        ))}
-      </ul>
-      <div className="flex gap-3 items-center">
-        <Link href="/carts" className="flex gap-2 items-center">
-          <ShoppingCart />
-          <span className="p-1 bg-gray-100 px-2 rounded-xl">
-            {cart?.length ?? 0}
-          </span>
+    <header className="w-full shadow-sm bg-white sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto flex items-center justify-between px-4 py-3">
+        {/* Logo */}
+        <Link href="/" className="flex items-center gap-2">
+          <Image src="/logo.svg" alt="Logo" width={60} height={60} priority />
         </Link>
-        {!user ? (
-          <Button onClick={() => googleLogin()}>Sign In / Sign Up</Button>
-        ) : (
-          <Button className="w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center text-lg">
-            {user.name?.charAt(0).toUpperCase()}
-          </Button>
-        )}
+
+        {/* Desktop Nav */}
+        <nav className="hidden md:flex items-center gap-8">
+          {menu.map((item) => (
+            <Link
+              key={item.id}
+              href={item.path}
+              className="text-gray-700 hover:text-blue-600 font-medium transition"
+            >
+              {item.name}
+            </Link>
+          ))}
+        </nav>
+
+        {/* Right Side Icons */}
+        <div className="flex items-center gap-4">
+          <Link href="/carts" className="relative">
+            <ShoppingCart className="text-gray-700" />
+            <span className="absolute -top-2 -right-2 text-xs bg-red-500 text-white px-1.5 rounded-full">
+              {cart?.length ?? 0}
+            </span>
+          </Link>
+          {!user ? (
+            <Button size="sm" onClick={() => googleLogin()}>
+              Sign In / Sign Up
+            </Button>
+          ) : (
+            <Button
+              size="icon"
+              className="rounded-full bg-blue-600 text-white hover:bg-blue-700"
+            >
+              {user.name?.charAt(0).toUpperCase()}
+            </Button>
+          )}
+          {/* Mobile menu icon */}
+          <button
+            className="md:hidden text-gray-700"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
+            <Menu size={24} />
+          </button>
+        </div>
       </div>
-    </div>
+
+      {/* Mobile Menu */}
+      {mobileMenuOpen && (
+        <div className="md:hidden px-4 pb-4">
+          <ul className="flex flex-col gap-3">
+            {menu.map((item) => (
+              <li key={item.id}>
+                <Link
+                  href={item.path}
+                  className="block text-gray-700 hover:text-blue-600 font-medium transition"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {item.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </header>
   );
 }
 

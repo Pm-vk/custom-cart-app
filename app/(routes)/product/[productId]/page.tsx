@@ -17,7 +17,7 @@ function ProductDetail() {
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(false);
   const [enableCustomizeStudio, setEnableCustomizeStudio] = useState(false);
-  const { cart, setCart } = useContext(CartContext);
+  const { setCart } = useContext(CartContext);
   const { userDetail } = useContext(UserDetailContext);
   const [designUrl, setDesignurl] = useState<string>();
 
