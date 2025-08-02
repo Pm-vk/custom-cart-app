@@ -13,11 +13,18 @@ export function UserDetailProvider({
   const [cart, setCart] = useState<any[]>([]);
   //get cart list
 
+  const removeFromCart = (index: number) => {
+    setCart((prevCart) => {
+      const newCart = [...prevCart];
+      newCart.splice(index, 1);
+      return newCart;
+    });
+  };
 
   return (
     // @ts-ignore
     <UserDetailContext.Provider value={{ userDetail, setUserDetail }}>
-      <CartContext.Provider value={{cart,setCart}}>{children}</CartContext.Provider>
+      <CartContext.Provider value={{cart, setCart, removeFromCart}}>{children}</CartContext.Provider>
     </UserDetailContext.Provider>
   );
 }
