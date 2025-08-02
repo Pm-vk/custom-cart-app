@@ -14,22 +14,19 @@ function Hero() {
           </h1>
 
           <p className="mt-6 text-lg text-gray-700 max-w-md">
-            Customize at your fingertip. Bring your imagination to life with our easy-to-use design studio.
+            Transform your wardrobe with personalized designs! Our platform helps you create aesthetic clothing, bags, and accessories by adding your favorite designs to fabric items. Express your unique style with our easy-to-use customization tools.
           </p>
 
-          <div className="mt-8 flex gap-4">
-            <a
-              href="#"
-              className="inline-block bg-indigo-600 text-white font-semibold px-6 py-3 rounded-lg shadow-md hover:bg-indigo-700 transition-transform transform hover:-translate-y-1"
-            >
-              Start Designing
-            </a>
-            <a
-              href="#"
-              className="inline-block border border-gray-300 text-gray-700 font-medium px-6 py-3 rounded-lg shadow-md hover:bg-gray-100 hover:text-gray-900 transition-transform transform hover:-translate-y-1"
-            >
-              Explore Products
-            </a>
+          <div className="mt-8 flex items-center gap-4">
+            <div className="text-6xl animate-bounce">
+              🎨
+            </div>
+            <div className="text-4xl animate-pulse">
+              ✨
+            </div>
+            <div className="text-5xl animate-spin" style={{ animationDuration: '3s' }}>
+              🌟
+            </div>
           </div>
         </div>
 
@@ -38,7 +35,7 @@ function Hero() {
           <div className="p-4 bg-white border-4 border-indigo-600 rounded-2xl shadow-xl transform transition-transform hover:scale-105">
             <Image
               src="/hero.png"
-              alt="hero"
+              alt=""
               width={450}
               height={450}
               className="rounded-xl"

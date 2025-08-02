@@ -30,9 +30,9 @@ export default function RootLayout({
         <GoogleOAuthProvider clientId={process.env.GOOGLE_CLIENT_ID!}>
           <UserDetailProvider>
             <div className="px-10 md:px-20 lg:px-36">
-            <Header />
+              <Header />
               {children}
-              </div>
+            </div>
           </UserDetailProvider>
         </GoogleOAuthProvider>
       </body>
