@@ -56,6 +56,8 @@ function Categories() {
             </h3>
           </Link>
         ))}
+        
+
       </div>
     </div>
   );
