@@ -98,7 +98,7 @@ const Carts = () => {
                       <div>
                         <dt className="inline">Price: </dt>
                         <dd className="inline font-semibold">
-                          ₹{product?.pricing ?? 0}
+                          ${product?.pricing ?? 0}
                         </dd>
                       </div>
                     </dl>
