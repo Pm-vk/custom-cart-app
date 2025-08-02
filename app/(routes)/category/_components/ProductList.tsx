@@ -51,7 +51,7 @@ function ProductList() {
                         <ProductCard product={product} key={index} />
                     ))
                 ) : (
-                    // Coming Soon section only for mugs and posters
+                    // Coming Soon section for mugs and posters
                     (categoryName === 'mugs' || categoryName === 'posters') ? (
                         <div className="col-span-full">
                             <div className="text-center py-16 bg-gradient-to-r from-gray-50 to-white rounded-2xl border-2 border-dashed border-gray-300">
