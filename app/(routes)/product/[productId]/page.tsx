@@ -37,17 +37,25 @@ function ProductDetail() {
 
   const AddToCart = async() => {
     console.log("Design URL added:", designUrl);
+    
+    // Only add to cart if we have a product
+    if (!product) {
+      console.error("No product to add to cart");
+      return;
+    }
+    
     setCart((prev: any) => [
       ...(Array.isArray(prev) ? prev : []),
       {
-        design: designUrl,
+        design: designUrl || null,
         products: product,
         userEmail: userDetail?.email,
       },
     ]);
+    
     const result=await axios.post('/api/cart',{
       product:product,
-      designUrl:designUrl,
+      designUrl:designUrl || null,
       userEmail:userDetail?.email
 
     })

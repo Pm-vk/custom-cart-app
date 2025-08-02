@@ -6,21 +6,22 @@ export async function GET(req:NextRequest) {
     const {searchParams}=new URL(req.url);
     const email=searchParams.get('email');
     try{
-        const result=await axiosClient.get('/carts?filters[userEmai][$eq]='+email+'&populate=[products]-[populate][0]-productImage');
-        console.log(result.data.data);
+        const result=await axiosClient.get('/carts?filters[userEmail][$eq]='+email+'&populate[products][populate][0]=productimage');
+        console.log('Cart API Response:', JSON.stringify(result.data.data, null, 2));
         return NextResponse.json(result.data.data);
 
     }catch(e){
+        console.error('Cart API Error:', e);
         return NextResponse.json(e);
     }
     
 }
 export async function POST(req:NextRequest) {
-    const {userEmail,setDesignUrl,product}=await req.json();
+    const {userEmail,designUrl,product}=await req.json();
     const data={
         data:{
             userEmail:userEmail,
-            design:setDesignUrl,
+            design:designUrl || null,
             products:{
                 connect:[product?.documentId]
             }

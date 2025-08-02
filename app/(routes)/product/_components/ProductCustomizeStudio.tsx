@@ -71,7 +71,6 @@ function ProductCustomizeStudio({ product,setDesignUrl }: Props) {
   // Handle resize
   useEffect(() => {
     if (!canvasInstance) return;
-    setDesignUrl(uploadedImgRef)
 
     const handleResize = () => {
       const size = getCanvasSize();
@@ -100,6 +99,7 @@ function ProductCustomizeStudio({ product,setDesignUrl }: Props) {
         await img.setSrc(newUrl);
         canvasInstance.renderAll();
         currentImgUrlRef.current = newUrl;
+        setDesignUrl(newUrl); // Update design URL with transformed image
       } catch (err) {
         console.error("Transformation failed, reverting to base image:", err);
         setActiveTransformations([]); // reset transformations
@@ -141,6 +141,7 @@ function ProductCustomizeStudio({ product,setDesignUrl }: Props) {
       setBaseImageUrl(url);
       currentImgUrlRef.current = url;
       setActiveTransformations([]);
+      setDesignUrl(url); // Set the design URL when image is uploaded
 
       const img = await FabricImage.fromURL(url);
       const scale = Math.min(
@@ -180,6 +181,7 @@ function ProductCustomizeStudio({ product,setDesignUrl }: Props) {
     setBaseImageUrl(null);
     setActiveTransformations([]);
     currentImgUrlRef.current = null;
+    setDesignUrl(undefined); // Clear design URL when image is removed
     canvasInstance.renderAll();
   };
 
